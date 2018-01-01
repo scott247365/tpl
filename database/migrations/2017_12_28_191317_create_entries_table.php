@@ -15,6 +15,12 @@ class CreateEntriesTable extends Migration
     {
         Schema::create('entries', function (Blueprint $table) {
             $table->increments('id');
+			$table->text('title');
+			$table->text('description')->nullable();
+			$table->text('description_language1')->nullable();
+			$table->unsignedInteger('user_id');
+			$table->tinyInteger('type_flag')->default(-1);
+			$table->unsignedInteger('view_count')->default(0);
             $table->timestamps();
         });
     }
@@ -26,6 +32,6 @@ class CreateEntriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('entries');
+        Schema::dropIfExists('entry');
     }
 }
