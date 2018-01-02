@@ -17,6 +17,10 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 	
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+	
+	<script type="text/javascript" src="{{ URL::asset('js/jquery.min.js') }}"></script>	
+	<script type="text/javascript" src="{{ URL::asset('js/myscripts.js') }}"></script>	
+	
 </head>
 <body>
     <div id="app">

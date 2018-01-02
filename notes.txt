@@ -1,5 +1,11 @@
 // drop all tables and migrate all
 php artisan migrate:reset
 
+php artisan migrate
+php artisan migrate:rollback
+
+
 // make models and controllers
 php artisan make:model Tag -m -c
+
+

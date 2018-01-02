@@ -15,7 +15,7 @@
 									<a href='/entries/edit/{{$entry->id}}'><span class="glyphCustom glyphicon glyphicon-edit"></span></a>
 								</td>
                                 <td>
-                                    <a href="/entries/view/{{$entry->id}}">{{$entry->title}}</a>
+                                    <a href="/entries/gen/{{$entry->id}}">{{$entry->title}}</a>
                                 </td>
                                 <td>
 									<a href='/entries/delete/{{$entry->id}}'><span class="glyphCustom glyphicon glyphicon-trash"></span></a>

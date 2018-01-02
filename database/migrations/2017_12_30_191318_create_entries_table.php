@@ -19,7 +19,7 @@ class CreateEntriesTable extends Migration
 			$table->text('description')->nullable();
 			$table->text('description_language1')->nullable();
 			$table->unsignedInteger('user_id');
-			$table->tinyInteger('type_flag')->default(-1);
+			$table->tinyInteger('category_flag')->default(-1);
 			$table->unsignedInteger('view_count')->default(0);
             $table->timestamps();
         });
