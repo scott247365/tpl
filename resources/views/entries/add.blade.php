@@ -26,11 +26,6 @@
 		</div>
 
 		<div style="clear: both;" class="form-group">
-			<input type="checkbox" name="uses_template_flag" id="user_template_flag" class="" />
-			<label for="uses_template_flag">Uses Template</label>
-			
-			<span>&nbsp;&nbsp;</span>
-			
 			<input type="checkbox" name="is_template_flag" id="is_template_flag" class="" />
 			<label for="is_template_flag">Is Template</label>
 		</div>

@@ -14,9 +14,15 @@ class EntryController extends Controller
 {
     public function index()
     {
-    	$user = Auth::user();
+    	//$user = Auth::user(); // original gets current user with all entries
 		
-    	return view('entries.index', compact('user'));
+		$entries = Entry::select()
+			->where('user_id', '=', Auth::id())
+			//->where('is_template_flag', '<>', 1)
+			->orderBy('entries.is_template_flag')
+			->get();
+		
+    	return view('entries.index', compact('entries'));
     }
 
     public function add()
@@ -35,7 +41,7 @@ class EntryController extends Controller
     	$entry->description = $request->description;
     	$entry->description_language1 = $request->description_language1;
     	$entry->is_template_flag = (isset($request->is_template_flag)) ? 1 : 0;
-    	$entry->uses_template_flag = (isset($request->uses_template_flag)) ? 1 : 0;
+    	//$entry->uses_template_flag = (isset($request->uses_template_flag)) ? 1 : 0; //sbw
     	$entry->user_id = Auth::id();
 		
 		//dd($entry);		
@@ -59,9 +65,9 @@ class EntryController extends Controller
     public function gen(Entry $entry)
     {
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
-        {          
-			if ($entry->uses_template_flag === 1)
-			{
+        {    
+			if ($entry->is_template_flag === 0 || $entry->is_template_flag === "0")
+			{				
 				// get the template
 				$template = DB::table('entries')->where('is_template_flag', 1)->first();
 				
@@ -91,21 +97,23 @@ class EntryController extends Controller
 				return view('entries.view', compact('entry'));
 			}	
         }           
-        else {
+        else 
+		{
              return redirect('/');
-         }            	
+		}            	
     }
-	
-	
-	
+
     public function edit(Request $request, Entry $entry)
     {
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
-        {            
+        {
 			if(isset($_GET['delete'])) {
 				return view('entries.delete', compact('entry'));
 			}
-			
+
+			// flags come from dev mysql as ints and prod mysql as strings
+			$entry['is_template'] = ($entry->is_template_flag === "1" || $entry->is_template_flag === 1);
+
 			return view('entries.edit', compact('entry'));
         }           
         else {
@@ -114,6 +122,19 @@ class EntryController extends Controller
     }
 
     public function delete(Entry $entry)
+    {	
+		dd($entry);
+    	if (Auth::check() && Auth::user()->id == $entry->user_id)
+        {            
+			return view('entries.delete', compact('entry'));
+        }           
+        else 
+		{
+			return redirect('/');
+		}            	
+    }
+	
+    public function confirmdelete(Entry $entry)
     {	
    		$entry->delete();
 		
@@ -128,7 +149,6 @@ class EntryController extends Controller
    		$entry->description 			= $request->description;
    		$entry->description_language1 	= $request->description_language1;
     	$entry->is_template_flag 		= isset($request->is_template_flag) ? 1 : 0;
-    	$entry->uses_template_flag 		= isset($request->uses_template_flag) ? 1 : 0;
     	$entry->save();
 		
     	return redirect('/'); 
@@ -154,4 +174,57 @@ class EntryController extends Controller
 	
 		return $description;
 	}	
+	
+    public function search($search)
+    {
+		$rc = 0;
+		$userId = 1;
+		$entries = null;
+
+		if (mb_strlen($search) > 0)
+		{
+			// strip everything except alpha-numerics, colon, and spaces
+			$search = preg_replace("/[^:a-zA-Z0-9 .]+/", "", $search);
+		}
+		else
+		{
+			echo 'no search string';
+			return $rc;
+		}
+
+		if (mb_strlen($search) == 0)
+		{
+			echo 'no search string';
+			return $rc;
+		}
+
+		$entries = Entry::where('user_id', '=', Auth::id())
+			//->where('is_template_flag', '=', 0)
+			->where('title', 'like', '%' . $search . '%')
+			->orWhere('description', 'like', '%' . $search . '%')
+			//->orWhere('description_language1', 'like', '%' . $search . '%')
+			->orderBy('title')
+			->limit(30)
+			->get();
+
+		//dd($entries);
+				
+    	return view('entries.search', compact('entries'));
+	}
+	
+    public function updateviews(Entry $entry)
+    {
+		dd($entry);
+		/*
+		$this->autoRender = false;		
+		
+   		$entry->title 					= $request->title;
+   		$entry->description 			= $request->description;
+   		$entry->description_language1 	= $request->description_language1;
+    	$entry->is_template_flag 		= isset($request->is_template_flag) ? 1 : 0;
+    	$entry->uses_template_flag 		= isset($request->uses_template_flag) ? 1 : 0; //sbw
+    	$entry->save();	
+		*/
+	}
+	
 }

@@ -4,6 +4,24 @@ H4 {
 	color:white;
 }
 
+.float-left {
+	display: flex;
+	float: left;
+}
+
+.clear {
+	clear:both;
+}
+
+/***************************************************
+Container
+***************************************************/
+.container {
+	width: 100%;
+	padding-left: 25px;
+	padding-right: 20px;
+}
+
 /***************************************************
 Controls
 ***************************************************/
@@ -24,12 +42,20 @@ Controls
 	display: flex;
 }
 
+.entry-div-copy {
+	height: 10px;	
+}
+
 .entry {	
 	margin: 30px 20px 0px 0px; 
 	font-size: 1.3em;
 	background-color: white;
 	float: left;
 	width: 48%;
+}
+
+.entry a:hover {
+	text-decoration: none;
 }
 
 .entry2 {

@@ -8,4 +8,3 @@ php artisan migrate:rollback
 // make models and controllers
 php artisan make:model Tag -m -c
 
-

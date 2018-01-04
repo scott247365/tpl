@@ -4,6 +4,7 @@
 
 @component('menu-submenu')
 	@component('menu-icons-start')@endcomponent
+	@component('menu-icons-entry') {{ $entry->id }} @endcomponent
 @endcomponent
 
 <div class="container">
@@ -15,20 +16,19 @@
 	</div>
 	
 	<div class="entry-div">
-		<a href='#' onclick="javascript:copyToClipboardAndCount('entry', 'entryCopy', '/entries/updateviews/{{$entry->id}}')";>
-			<span class="glyphCustom glyphicon glyphicon-copy"></span>
-		</a>
 	
 		<div class="entry">
+			<a href='#' onclick="javascript:copyToClipboardAndCount('entry', 'entryCopy', '/entries/updateviews/{{$entry->id}}')";>
+				<span class="glyphCustom glyphicon glyphicon-copy"></span>
+			</a>
 			<span name="description" class="">{!! $entry->description !!}</span>	
 			<span class="entry-copy" id="entryCopy">{!! $description_copy !!}</span>		
 		</div>
-
-		<a href='#' onclick="javascript:copyToClipboardAndCount('entry2', 'entryCopy2', '/entries/updateviews/{{$entry->id}}')";>
-			<span class="glyphCustom glyphicon glyphicon-copy"></span>
-		</a>
 		
 		<div class="entry entry2">
+			<a href='#' onclick="javascript:copyToClipboardAndCount('entry2', 'entryCopy2', '/entries/updateviews/{{$entry->id}}')";>
+				<span class="glyphCustom glyphicon glyphicon-copy"></span>
+			</a>
 			<span name="description_language1" class="">{!! $entry->description_language1 !!}</span>
 			<span class="entry-copy" id="entryCopy2">{!! $description_copy2 !!}</span>		
 		</div>

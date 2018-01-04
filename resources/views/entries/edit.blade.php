@@ -4,6 +4,7 @@
 
 @component('menu-submenu')
 	@component('menu-icons-start')@endcomponent
+	@component('menu-icons-entry') {{ $entry->id }} @endcomponent
 @endcomponent
 
 <div class="container">
@@ -23,13 +24,8 @@
 			<textarea name="description_language1" class="form-control description-text" >{{$entry->description_language1 }}</textarea>	
 		</div>
 
-		<div class="form-group">
-			<input type="checkbox" name="uses_template_flag" id="uses_template_flag" class="" value="{{$entry->uses_template_flag }}" {{ ($entry->uses_template_flag === 1) ? 'checked' : '' }} />
-			<label for="uses_template_flag">Uses Template</label>
-									
-			<span>&nbsp;&nbsp;</span>
-			
-			<input type="checkbox" name="is_template_flag" id="is_template_flag" class="" value="{{$entry->is_template_flag }}" {{ ($entry->is_template_flag === 1) ? 'checked' : '' }} />
+		<div class="form-group">			
+			<input type="checkbox" name="is_template_flag" id="is_template_flag" class="" value="{{$entry->is_template_flag }}" {{ ($entry->is_template) ? 'checked' : '' }} />
 			<label for="is_template_flag">Is Template</label>
 		</div>
 		
