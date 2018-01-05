@@ -19,7 +19,7 @@ class EntryController extends Controller
 		$entries = Entry::select()
 			->where('user_id', '=', Auth::id())
 			//->where('is_template_flag', '<>', 1)
-			->orderBy('entries.is_template_flag')
+			->orderByRaw('is_template_flag, view_count DESC')			
 			->get();
 		
     	return view('entries.index', compact('entries'));
@@ -107,35 +107,33 @@ class EntryController extends Controller
     {
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
         {
-			if(isset($_GET['delete'])) {
-				return view('entries.delete', compact('entry'));
-			}
-
 			// flags come from dev mysql as ints and prod mysql as strings
 			$entry['is_template'] = ($entry->is_template_flag === "1" || $entry->is_template_flag === 1);
 
 			return view('entries.edit', compact('entry'));
         }           
-        else {
+        else 
+		{
              return redirect('/');
-         }            	
+		}            	
     }
 
-    public function delete(Entry $entry)
+    public function confirmdelete(Request $request, Entry $entry)
     {	
-		dd($entry);
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
-        {            
+        {
 			return view('entries.delete', compact('entry'));
         }           
         else 
 		{
-			return redirect('/');
+             return redirect('/');
 		}            	
     }
 	
-    public function confirmdelete(Entry $entry)
+    public function delete(Request $request, Entry $entry)
     {	
+		//dd($entry);
+		
    		$entry->delete();
 		
    		return redirect('/');
@@ -212,19 +210,11 @@ class EntryController extends Controller
     	return view('entries.search', compact('entries'));
 	}
 	
-    public function updateviews(Entry $entry)
-    {
-		dd($entry);
-		/*
-		$this->autoRender = false;		
-		
-   		$entry->title 					= $request->title;
-   		$entry->description 			= $request->description;
-   		$entry->description_language1 	= $request->description_language1;
-    	$entry->is_template_flag 		= isset($request->is_template_flag) ? 1 : 0;
-    	$entry->uses_template_flag 		= isset($request->uses_template_flag) ? 1 : 0; //sbw
+    public function viewcount(Entry $entry)
+    {		
+    	$entry->view_count++;
     	$entry->save();	
-		*/
+    	return view('entries.viewcount');
 	}
 	
 }

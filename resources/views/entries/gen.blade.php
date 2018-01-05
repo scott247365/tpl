@@ -18,7 +18,7 @@
 	<div class="entry-div">
 	
 		<div class="entry">
-			<a href='#' onclick="javascript:copyToClipboardAndCount('entry', 'entryCopy', '/entries/updateviews/{{$entry->id}}')";>
+			<a href='#' onclick="javascript:copyToClipboardAndCount('entry', 'entryCopy', '/entries/viewcount/{{$entry->id}}')";>
 				<span class="glyphCustom glyphicon glyphicon-copy"></span>
 			</a>
 			<span name="description" class="">{!! $entry->description !!}</span>	
@@ -26,7 +26,7 @@
 		</div>
 		
 		<div class="entry entry2">
-			<a href='#' onclick="javascript:copyToClipboardAndCount('entry2', 'entryCopy2', '/entries/updateviews/{{$entry->id}}')";>
+			<a href='#' onclick="javascript:copyToClipboardAndCount('entry2', 'entryCopy2', '/entries/viewcount/{{$entry->id}}')";>
 				<span class="glyphCustom glyphicon glyphicon-copy"></span>
 			</a>
 			<span name="description_language1" class="">{!! $entry->description_language1 !!}</span>

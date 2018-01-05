@@ -1,7 +1,6 @@
+<nav class="margin:0; padding:0; large-3 medium-4 columns" id="submenu">
 
-<nav class="large-3 medium-4 columns" id="submenu">
-
-	<div class="float-left">
+	<div class="submenu">
 		<ul class="submenu">
 			{{ $slot }}
 		</ul>
@@ -9,5 +8,5 @@
 
 	@component('control-search')
 	@endcomponent
+	
 </nav>
-
