@@ -40,6 +40,7 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/view/{entry}','EntryController@view')->middleware('auth');
 	Route::get('/gen/{entry}','EntryController@gen')->middleware('auth');
 	Route::get('/search/{entry}','EntryController@search')->middleware('auth');
+	Route::get('/gendex/{entry}','EntryController@gendex')->middleware('auth');
 	
 	// other posts
 	

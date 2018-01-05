@@ -74,46 +74,12 @@ class EntryController extends Controller
     }
 
     public function gen(Entry $entry)
-    {
+    {		
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
-        {    
-			if (intval($entry->is_template_flag) === 0)
-			{				
-				// get the template
-				$template = DB::table('entries')->where('is_template_flag', 1)->first();
-				
-				if ($template !== null)
-				{	
-					$descriptionCopy = $this->merge($template->description, $entry->description);		
-					$descriptionCopy2 = $this->merge($template->description_language1, $entry->description_language1);
+        {
+			$entry = $this->merge_entry($entry);
 					
-					$entry->description = $this->merge($template->description, $entry->description, /* style = */ true);			
-					$entry->description_language1 = $this->merge($template->description_language1, $entry->description_language1, /* style = */ true);
-					//dd($entry->description);
-
-					$data = compact('entry');
-					$data['description_copy'] = $descriptionCopy;
-					$data['description_copy2'] = $descriptionCopy2;					
-					//dd($data);
-					
-					return view('entries.gen', $data);
-				}
-				else
-				{
-				}
-			}
-			else
-			{
-			}	
-			
-			$entry->description = nl2br($entry->description);
-			$entry->description_language1 = nl2br($entry->description_language1);
-						
-			$data = compact('entry');
-			$data['description_copy'] = $entry->description;
-			$data['description_copy2'] = $entry->description_language1;
-					
-			return view('entries.gen', $data);			
+			return view('entries.gen', $entry);			
         }           
         else 
 		{
@@ -121,6 +87,68 @@ class EntryController extends Controller
 		}            	
     }
 
+    public function gendex(Entry $entry)
+    {
+    	if (Auth::check() && Auth::user()->id == $entry->user_id)
+        {
+			$entries = Entry::select()
+				->where('user_id', '=', Auth::id())
+				->where('is_template_flag', '<>', 1)
+				->where('view_count', '>', 0)
+				->orderByRaw('is_template_flag, entries.view_count DESC')
+				->limit(25)
+				->get();
+			
+			$data = $this->merge_entry($entry);
+			$data['entries'] = $entries;
+	
+			//dd($data);
+								
+			return view('entries.gendex', $data);
+        }          	
+    }
+	
+	private function merge_entry(Entry $entry)
+    {
+		if (intval($entry->is_template_flag) === 0)
+		{				
+			// get the template
+			$template = DB::table('entries')->where('is_template_flag', 1)->first();
+				
+			if ($template !== null)
+			{	
+				$descriptionCopy = $this->merge($template->description, $entry->description);		
+				$descriptionCopy2 = $this->merge($template->description_language1, $entry->description_language1);
+					
+				$entry->description = $this->merge($template->description, $entry->description, /* style = */ true);			
+				$entry->description_language1 = $this->merge($template->description_language1, $entry->description_language1, /* style = */ true);
+				//dd($entry->description);
+
+				$data = compact('entry');
+				$data['description_copy'] = $descriptionCopy;
+				$data['description_copy2'] = $descriptionCopy2;					
+				//dd($data);
+				
+				return $data;
+			}
+			else
+			{
+			}
+		}
+		else
+		{
+		}	
+			
+		$entry->description = nl2br($entry->description);
+		$entry->description_language1 = nl2br($entry->description_language1);
+					
+		$data = compact('entry');
+		$data['description_copy'] = $entry->description;
+		$data['description_copy2'] = $entry->description_language1;
+		
+		return $data;
+	}
+	
     public function edit(Request $request, Entry $entry)
     {
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
