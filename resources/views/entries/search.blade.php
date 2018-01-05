@@ -27,7 +27,7 @@ a:hover {
 }
 
 </style>
-
+	
 <div class='popup'>
 	<span class='popuptext'>
 	@foreach($entries as $entry)
@@ -35,5 +35,13 @@ a:hover {
 			<a style="" href="/entries/gen/{{$entry->id}}">{{$entry->title}}</a>
 		</div>
 	@endforeach
+	
+<?php if (count($entries) === 25) : ?>
+	<div style="padding: 3px 0px;" class="">
+		<span style="color: gray;" >{{ '(Only showing first 25 results)' }}</span>
+	</div>
+<?php endif; ?>
+
+	
 	</span>
 </div>

@@ -3,9 +3,12 @@
 	<div class="submenu">
 		<ul class="submenu">
 			{{ $slot }}
-		</ul>
+			@component('menu-icons-links')
+			@endcomponent
+		</ul>		
 	</div>
 
+	
 	@component('control-search')
 	@endcomponent
 	

@@ -4,9 +4,10 @@
 
 @component('menu-submenu')
 	@component('menu-icons-start')@endcomponent
+	@component('menu-icons-entry') {{ $entry->id }} @endcomponent
 @endcomponent
 
-<div class="container">
+<div class="container single-view-page">
 	<h2>Delete Entry</h2>
 
 	<form method="POST" action="/entries/delete/{{ $entry->id }}">

@@ -1,4 +1,4 @@
-<li><a href='/'><span class="glyphCustom glyphicon glyphicon-list"></span></a></li>
+<li><a href='/'><span class="glyphCustom glyphicon glyphicon-home"></span></a></li>
 <li><a href='/entries/main/'><span class="glyphCustom glyphicon glyphicon-tag"></span></a></li>
 <li><a href='/entries/add/'><span class="glyphCustom glyphicon glyphicon-plus-sign"></span></a></li>
 

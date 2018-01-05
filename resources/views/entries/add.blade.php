@@ -6,7 +6,7 @@
 	@component('menu-icons-start')@endcomponent
 @endcomponent
 
-<div class="container">
+<div class="container single-view-page">
 	<h2>Add Entry</h2>
                
 	<form method="POST" action="/entries/create">

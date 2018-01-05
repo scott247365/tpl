@@ -21,6 +21,7 @@ Route::get('/', 'EntryController@index')->middleware('auth');
 Route::group(['prefix' => 'entries'], function () {
 	
 	Route::get('/index', 'EntryController@index')->middleware('auth');
+	Route::get('/templates', 'EntryController@templates')->middleware('auth');
 
 	// add/create
 	Route::get('/add','EntryController@add')->middleware('auth');

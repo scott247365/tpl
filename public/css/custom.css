@@ -13,6 +13,10 @@ H4 {
 	clear:both;
 }
 
+.single-view-page {
+	max-width: 1000px;
+}
+
 /***************************************************
 Container
 ***************************************************/
@@ -121,6 +125,7 @@ ul.submenu {
 
 .topMenuLiCenter { 
 	padding-top: 5px; 
+	padding-left: 10px;
 }
 
 .topMenuLiCenterInput  { 

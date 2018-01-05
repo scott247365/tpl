@@ -18,13 +18,24 @@ class EntryController extends Controller
 		
 		$entries = Entry::select()
 			->where('user_id', '=', Auth::id())
-			//->where('is_template_flag', '<>', 1)
-			->orderByRaw('is_template_flag, view_count DESC')			
+			->where('is_template_flag', '<>', 1)
+			->orderByRaw('is_template_flag, entries.view_count DESC')
 			->get();
 		
     	return view('entries.index', compact('entries'));
     }
 
+    public function templates()
+    {
+		$entries = Entry::select()
+			->where('user_id', '=', Auth::id())
+			->where('is_template_flag', '=', 1)
+			->orderByRaw('id')
+			->get();
+		
+    	return view('entries.index', compact('entries'));
+    }
+	
     public function add()
     {
 		//todo $categories = Category::lists('title', 'id');
@@ -48,7 +59,7 @@ class EntryController extends Controller
 		
     	$entry->save();
 		
-    	return redirect('/'); 
+    	return redirect('/entries/gen/' . $entry->id); 
     }
 
     public function view(Entry $entry)
@@ -66,7 +77,7 @@ class EntryController extends Controller
     {
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
         {    
-			if ($entry->is_template_flag === 0 || $entry->is_template_flag === "0")
+			if (intval($entry->is_template_flag) === 0)
 			{				
 				// get the template
 				$template = DB::table('entries')->where('is_template_flag', 1)->first();
@@ -89,13 +100,20 @@ class EntryController extends Controller
 				}
 				else
 				{
-					return view('entries.view', compact('entry'));
 				}
 			}
 			else
 			{
-				return view('entries.view', compact('entry'));
 			}	
+			
+			$entry->description = nl2br($entry->description);
+			$entry->description_language1 = nl2br($entry->description_language1);
+						
+			$data = compact('entry');
+			$data['description_copy'] = $entry->description;
+			$data['description_copy2'] = $entry->description_language1;
+					
+			return view('entries.gen', $data);			
         }           
         else 
 		{
@@ -108,7 +126,7 @@ class EntryController extends Controller
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
         {
 			// flags come from dev mysql as ints and prod mysql as strings
-			$entry['is_template'] = ($entry->is_template_flag === "1" || $entry->is_template_flag === 1);
+			$entry['is_template'] = (intval($entry->is_template_flag) === 1);
 
 			return view('entries.edit', compact('entry'));
         }           
@@ -149,14 +167,25 @@ class EntryController extends Controller
     	$entry->is_template_flag 		= isset($request->is_template_flag) ? 1 : 0;
     	$entry->save();
 		
-    	return redirect('/'); 
+    	return redirect('/entries/gen/' . $entry->id); 
     }
 	
 	private function merge($template, $description, $style = false)
 	{
 		$body = trim($description);
 		if (mb_strlen($body) == 0)
-			$body = '(' . strtoupper(__('Empty Body')) . ')';
+		{
+			if ($style === true)
+			{
+				// only show empty in the view version
+				$body = '(' . strtoupper(__('Empty Body')) . ')';
+			}
+			else
+			{
+				// leave a space for the copy version
+				$body = ' ';
+			}
+		}
 		
 		if (mb_strlen($template) > 0)
 		{
@@ -197,17 +226,19 @@ class EntryController extends Controller
 		}
 
 		$entries = Entry::where('user_id', '=', Auth::id())
-			//->where('is_template_flag', '=', 0)
+			->where('is_template_flag', '=', 0)
 			->where('title', 'like', '%' . $search . '%')
 			->orWhere('description', 'like', '%' . $search . '%')
-			//->orWhere('description_language1', 'like', '%' . $search . '%')
+			->orWhere('description_language1', 'like', '%' . $search . '%')
 			->orderBy('title')
-			->limit(30)
+			->limit(25)
 			->get();
+
+		$entries = compact('entries');
 
 		//dd($entries);
 				
-    	return view('entries.search', compact('entries'));
+    	return view('entries.search', $entries);
 	}
 	
     public function viewcount(Entry $entry)

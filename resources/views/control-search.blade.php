@@ -92,7 +92,7 @@ function search(url)
 	<form method="POST" action="/entries/search">
 	
 		<div class="input-group">
-			<input type="text" id="search" name="search" class="form-control" placeholder="Search" value="" oninput="onInput();" />
+			<input type="text" id="search" name="search" class="form-control" placeholder="Search" value="" oninput="onInput();" autocomplete="off" />
 			
 			<span class="input-group-btn">
 				<button style="width:50%;border:1px solid LightGray;" onclick="clearSearch()" class="btn btn-secondary" type="button">
