@@ -7,6 +7,7 @@
 @endcomponent
 
 <div class="container">
+	<h1 style="color: #337AB7; font-size:1.3em; margin-left:10px; margin-top:5px;">Templates ({{ count($entries) }})</h1>
 	@if (Auth::check())
 		<table class="table table-striped">
 			<tbody>

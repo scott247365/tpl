@@ -17,7 +17,6 @@ a:hover {
     color: #fff;
     position: absolute;
     z-index: 1;
-    xbottom: 125%;
 	top: 14px;
     left: 100%;
     margin-left: -210px;

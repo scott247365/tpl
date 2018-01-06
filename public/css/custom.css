@@ -30,7 +30,11 @@ Container
 Controls
 ***************************************************/
 
-.description-div {
+.entry-title-div {
+	margin-right: 1%;
+}
+
+.entry-description-div {
 	display: block;
 	margin:0;
 	margin-right: 1%;
@@ -38,7 +42,7 @@ Controls
 	width: 49%;
 }
 
-.description-text {
+.entry-description-text {
 	height: 400px !important;
 }
 
@@ -51,7 +55,7 @@ Controls
 }
 
 .entry {	
-	margin: 10px 20px 0px 0px; 
+	margin: 0px 10px 0px 0px; 
 	font-size: 1.3em;
 	background-color: white;
 	float: left;

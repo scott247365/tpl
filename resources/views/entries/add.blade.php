@@ -6,22 +6,22 @@
 	@component('menu-icons-start')@endcomponent
 @endcomponent
 
-<div class="container single-view-page">
-	<h2>Add Entry</h2>
+<div class="container">
+	<h3>Add Template</h3>
                
 	<form method="POST" action="/entries/create">
 
-		<div class="form-group">
+		<div class="form-group entry-title-div">
 			<input type="text" name="title" class="form-control" />
 		</div>
 
 		<div>
-			<div class="form-group description-div">
-				<textarea name="description" class="form-control description-text"></textarea>	
+			<div class="form-group entry-description-div">
+				<textarea name="description" class="form-control entry-description-text"></textarea>	
 			</div>
 
-			<div class="form-group description-div">
-				<textarea name="description_language1" class="form-control description-text"></textarea>	
+			<div class="form-group entry-description-div">
+				<textarea name="description_language1" class="form-control entry-description-text"></textarea>	
 			</div>
 		</div>
 

@@ -8,20 +8,20 @@
 @endcomponent
 
 <div class="container">
-	<h1>Edit</h1>
+	<h3>Edit Template</h3>
 
 	<form method="POST" action="/entries/update/{{ $entry->id }}">
 
-		<div class="form-group">
+		<div class="form-group entry-title-div">
 			<input type="text" name="title" class="form-control" value="{{$entry->title }}" />
 		</div>
 
-		<div class="form-group description-div">
-			<textarea name="description" class="form-control description-text">{{$entry->description }}</textarea>	
+		<div class="form-group entry-description-div">
+			<textarea name="description" class="form-control entry-description-text">{{$entry->description }}</textarea>	
 		</div>
 
-		<div class="form-group description-div">
-			<textarea name="description_language1" class="form-control description-text" >{{$entry->description_language1 }}</textarea>	
+		<div class="form-group entry-description-div">
+			<textarea name="description_language1" class="form-control entry-description-text" >{{$entry->description_language1 }}</textarea>	
 		</div>
 
 		<div class="form-group">			

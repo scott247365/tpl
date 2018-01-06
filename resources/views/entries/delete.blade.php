@@ -7,25 +7,43 @@
 	@component('menu-icons-entry') {{ $entry->id }} @endcomponent
 @endcomponent
 
+<style>
+
+.form-text {
+	font-size: 1.3em;
+}
+
+</style>
+
 <div class="container single-view-page">
-	<h2>Delete Entry</h2>
+	<!-- h2>Delete Entry</h2 -->
 
-	<form method="POST" action="/entries/delete/{{ $entry->id }}">
-
-		<div class="form-group">
-			<span name="title" class="">{{$entry->title }}</span>
-		</div>
+	<form style="margin-top:20px;" method="POST" action="/entries/delete/{{ $entry->id }}">
 
 		<div class="form-group">
-			<span name="description" class="">{{$entry->description }}</span>	
-		</div>
-
-		<div class="form-group">
-			<span name="description_language1" class="">{{$entry->description_language1 }}</span>
+			<button type="submit" class="btn btn-primary">Delete Entry</button>
 		</div>
 		
 		<div class="form-group">
-			<button type="submit" class="btn btn-primary">Confirm Delete</button>
+			<h3 name="title" class="">{{$entry->title }}</h3>
+		</div>
+
+		<hr />
+		
+		<div class="form-group form-text">
+			<span name="description" style="font-size:1.3em;">{!! $entry->description !!}</span>
+		</div>
+		
+		<hr />
+
+		<div class="form-group">
+			<span name="description_language1" style="font-size:1.3em;">{!! $entry->description_language1 !!}</span>
+		</div>
+		
+		<hr />
+		
+		<div class="form-group">
+			<button type="submit" class="btn btn-primary">Delete Entry</button>
 		</div>
 	{{ csrf_field() }}
 	</form>

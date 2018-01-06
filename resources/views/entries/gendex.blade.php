@@ -9,7 +9,7 @@
 
 <div style="margin-top: 20px;" class="container">
 
-<div style="width: 30%; min-width: 400px; margin-right: 30px;" class="float-left">
+<div style="width: 30%; min-width: 400px; margin-right: 20px;" class="float-left">
 	@if (Auth::check())
 		<table class="table table-striped">
 			<tbody>
@@ -38,7 +38,18 @@
 	@endif 
 </div>
 
-<div style="width: 65%" class="float-left">
+<style>
+
+.entry-div-page {
+	border: solid 1px rgb(232, 232, 232);
+    border-radius: 6px;	
+	padding: 10px;
+	background-color: rgb(247, 247, 247);
+}
+
+</style>
+
+<div style="min-width: 500px; width: 65%" class="float-left">
 <form method="POST" action="/entries/gen/{{ $entry->id }}">
 
 	<div class="form-group">
@@ -47,7 +58,7 @@
 	
 	<div class="entry-div">
 	
-		<div class="entry">
+		<div class="entry entry-div-page">
 			<a href='#' onclick="javascript:copyToClipboardAndCount('entry', 'entryCopy', '/entries/viewcount/{{$entry->id}}')";>
 				<span class="glyphCustom glyphicon glyphicon-copy"></span>
 			</a>
@@ -55,7 +66,7 @@
 			<span class="entry-copy" id="entryCopy">{!! $description_copy !!}</span>		
 		</div>
 		
-		<div class="entry entry2">
+		<div class="entry entry2 entry-div-page">
 			<a href='#' onclick="javascript:copyToClipboardAndCount('entry2', 'entryCopy2', '/entries/viewcount/{{$entry->id}}')";>
 				<span class="glyphCustom glyphicon glyphicon-copy"></span>
 			</a>
