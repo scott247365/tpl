@@ -36,8 +36,8 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::post('/delete/{entry}','EntryController@delete')->middleware('auth');
 
 	// crypt / encrypt
-	Route::get('/crypt', 'EntryController@crypt')->middleware('auth');
-	Route::post('/encrypt', 'EntryController@encrypt')->middleware('auth');
+	Route::get('/hash', 'EntryController@hash')->middleware('auth');
+	Route::post('/hasher', 'EntryController@hasher')->middleware('auth');
 	
 	// other gets
 	Route::get('/viewcount/{entry}','EntryController@viewcount')->middleware('auth');
