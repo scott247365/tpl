@@ -7,7 +7,7 @@
 @endcomponent
 
 <div class="container">
-	<h2>Delete Entry</h2>
+	<h1>Delete Template</h1>
 
 	<form method="POST" action="/entries/delete/{{ $entry->id }}">
 

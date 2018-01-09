@@ -2,7 +2,9 @@
 
 @section('content')
 
-@component('menu-submenu')
+<?php //echo 'gendex<br/>'; // dd($templates); ?>
+
+@component('menu-submenu', ['templates' => $templates])
 	@component('menu-icons-start')@endcomponent
 	@component('menu-icons-entry') {{ $entry->id }} @endcomponent
 @endcomponent
@@ -53,7 +55,7 @@
 <form method="POST" action="/entries/gen/{{ $entry->id }}">
 
 	<div class="form-group">
-		<h2 style="font-size: 1.8em; margin:0;" name="title" class="">{{$entry->title }}</h2>
+		<h1 style="margin:0;" name="title" class="title">{{$entry->title }}</h1>
 	</div>
 	
 	<div class="entry-div">

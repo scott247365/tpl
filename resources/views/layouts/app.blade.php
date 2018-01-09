@@ -9,14 +9,22 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'TPL') }}</title>
-
+	
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-	
+
+	<!-- App styles -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+
+	<style>
+	h1 {
+		font-size:24px;
+		color: #337AB7; 		
+	}
+	</style>
 	
 	<script type="text/javascript" src="{{ URL::asset('js/jquery.min.js') }}"></script>	
 	<script type="text/javascript" src="{{ URL::asset('js/myscripts.js') }}"></script>	
@@ -38,7 +46,8 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'TPL') }}
+						<img width="45px" src="/img/logo-top.png" />
+                        <!-- {{ config('app.name', 'TPL') }} -->
                     </a>
                 </div>
 

@@ -7,7 +7,7 @@
 @endcomponent
 
 <div class="container">
-	<h3>Add Template</h3>
+	<h1>Add Template</h1>
                
 	<form method="POST" action="/entries/create">
 

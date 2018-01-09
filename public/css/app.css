@@ -5183,6 +5183,7 @@ tbody.collapse.in {
 
 .navbar-default {
     background-color: #fff;
+	background-color: red;
     border-color: #d3e0e9
 }
 

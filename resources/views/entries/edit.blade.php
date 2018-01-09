@@ -8,7 +8,7 @@
 @endcomponent
 
 <div class="container">
-	<h3>Edit Template</h3>
+	<h1>Edit Template</h1>
 
 	<form method="POST" action="/entries/update/{{ $entry->id }}">
 

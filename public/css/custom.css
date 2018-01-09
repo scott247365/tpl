@@ -1,5 +1,13 @@
 <style>
 
+.entry-div-page {
+	border: solid 1px rgb(232, 232, 232);
+    border-radius: 6px;	
+	padding: 10px;
+	background-color: rgb(247, 247, 247);
+	background-color: red;
+}
+
 H4 {
 	color:white;
 }

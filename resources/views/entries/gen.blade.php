@@ -12,7 +12,7 @@
 <form method="POST" action="/entries/gen/{{ $entry->id }}">
 
 	<div class="form-group">
-		<h2 name="title" class="">{{$entry->title }}</h2>
+		<h1 name="title" class="">{{$entry->title }}</h1>
 	</div>
 	
 	<div class="entry-div">

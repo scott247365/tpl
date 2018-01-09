@@ -7,7 +7,7 @@
 @endcomponent
 
 <div class="container">
-                <h2>Add New Task</h2>
+                <h1>Add New Task</h1>
                
 <form method="POST" action="/task">
 

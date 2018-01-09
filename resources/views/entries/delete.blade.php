@@ -21,11 +21,11 @@
 	<form style="margin-top:20px;" method="POST" action="/entries/delete/{{ $entry->id }}">
 
 		<div class="form-group">
-			<button type="submit" class="btn btn-primary">Delete Entry</button>
+			<button type="submit" class="btn btn-primary">Confirm Delete</button>
 		</div>
 		
 		<div class="form-group">
-			<h3 name="title" class="">{{$entry->title }}</h3>
+			<h1 name="title" class="">{{$entry->title }}</h1>
 		</div>
 
 		<hr />
@@ -43,7 +43,7 @@
 		<hr />
 		
 		<div class="form-group">
-			<button type="submit" class="btn btn-primary">Delete Entry</button>
+			<button type="submit" class="btn btn-primary">Confirm Delete</button>
 		</div>
 	{{ csrf_field() }}
 	</form>

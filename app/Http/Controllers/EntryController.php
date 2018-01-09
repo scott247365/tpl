@@ -9,7 +9,9 @@ use DB;
 
 define('BODYSTYLE', '<span style="color:green;">');
 define('ENDBODYSTYLE', '</span>');
-define('EMPTYTEXT', '(Empty)');
+define('EMPTYBODY', 'Empty Body');
+define('BODY', 'Body');
+define('INTNOTSET', -1);
 
 class EntryController extends Controller
 {
@@ -70,7 +72,7 @@ class EntryController extends Controller
 			
 			$entry->save();
 			
-			return redirect('/entries/gendex/' . $entry->id); 
+			return redirect('/entries/gendex/' . $entry->id);
         }           
         else 
 		{
@@ -103,27 +105,92 @@ class EntryController extends Controller
              return redirect('/');
 		}            	
     }
-	
-    public function gendex(Entry $entry)
+
+    public function settemplate($id)
     {
-    	if (Auth::check() && Auth::user()->id == $entry->user_id)
-        {
+		$id = (intval($id) >= 0) ? intval($id) : 0;
+
+		// if id set and it is changing
+		if ($id > 0 && Auth::check() && intval(Auth::user()->template_id) != $id)
+		{
+			// template is changing
+			//dd('template change');
+			
+			Auth::user()->template_id = $id;
+			Auth::user()->save();
+		}
+
+    	return view('entries.settemplate');
+	}
+	
+    public function gendex($id = INTNOTSET)
+    {
+		$id = (intval($id) >= 0) ? intval($id) : 0;
+		
+		if (Auth::check())
+        {			
 			//
-			// show entry list
+			// get the template or entry to show
+			//
+			if ($id > 0) // get the specified article
+			{
+				$entry = Entry::select()
+					->where('user_id', '=', Auth::id())
+					->where('id', '=' , $id)
+					->first();
+					
+				$data = $this->merge_entry($entry);	
+			}
+			else // get the default template
+			{
+				$template_id = intval(Auth::user()->template_id);
+				
+				if ($template_id === 0) // default template not set, use first template
+				{
+					$entry = Entry::select()
+						->where('user_id', '=', Auth::id())
+						->where('is_template_flag', '=', 1)
+						->first();
+						
+				}
+				else // get user's default template
+				{
+					$entry = Entry::select()
+						->where('user_id', '=', Auth::id())
+						->where('is_template_flag', '=', 1)
+						->where('id', '=',  $template_id)
+						->first();
+				}
+					
+				$entry->description = str_replace("[[body]]", $this->fixEmpty('', BODY), $entry->description) . '<br/>';
+				$entry->description_language1 = str_replace("[[body]]", $this->fixEmpty('', BODY), $entry->description_language1) . '<br/>';
+					
+				$data = $this->merge_entry($entry);	
+			}			
+			
+			//
+			// get entry list
 			//
 			$entries = Entry::select()
 				->where('user_id', '=', Auth::id())
 				->where('is_template_flag', '<>', 1)
 				->where('view_count', '>', 0)
-				->orderByRaw('is_template_flag, entries.view_count DESC')
+				//->orderByRaw('is_template_flag, entries.view_count DESC')
+				->orderBy('title')
 				->limit(25)
 				->get();
+
+			//
+			// get template list
+			//
+			$templates = Entry::select('id', 'title')
+				->where('user_id', '=', Auth::id())
+				->where('is_template_flag', '=', 1)
+				->orderBy('title')
+				->get();
 			
-			//
-			// show default entry
-			//
-			$data = $this->merge_entry($entry);
 			$data['entries'] = $entries;
+			$data['templates'] = $templates;
 	
 			//dd($data);
 								
@@ -150,8 +217,8 @@ class EntryController extends Controller
     {	
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
         {
-			$entry->description = nl2br($this->fixEmpty(trim($entry->description)));			
-			$entry->description_language1 = nl2br($this->fixEmpty(trim($entry->description_language1)));
+			$entry->description = nl2br($this->fixEmpty(trim($entry->description), EMPTYBODY));
+			$entry->description_language1 = nl2br($this->fixEmpty(trim($entry->description_language1), EMPTYBODY));
 			
 			return view('entries.delete', compact('entry'));
         }           
@@ -170,7 +237,7 @@ class EntryController extends Controller
 			$entry->delete();
 		}
 		
-		return redirect('/entries/gendex/1');
+		return redirect('/entries/gendex');
     }
 	
     public function update(Request $request, Entry $entry)
@@ -245,16 +312,34 @@ class EntryController extends Controller
     	$entry->save();	
     	return view('entries.viewcount');
 	}
+
+    public function crypt()
+    {		
+    	return view('entries.crypt');
+	}
+	
+	public function encrypt(Request $request)
+	{
+		$search = $request->get('search');
+
+		dd($search);
+		//flash('Search text')->success();
+
+		return view('entries.crypt', $search);
+	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Privates
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-    private function fixEmpty(string $text)
+    private function fixEmpty(string $text, string $show)
     {	
 		if (mb_strlen($text) === 0)
 		{
-			$text = BODYSTYLE . EMPTYTEXT . ENDBODYSTYLE;			
+			$text = BODYSTYLE 
+			. '(' . strtoupper(__($show)) . ')'
+			. ENDBODYSTYLE;			
+
 		}
 		
 		return $text;
@@ -268,7 +353,7 @@ class EntryController extends Controller
 			if ($style === true)
 			{
 				// only show empty in the view version
-				$body = '(' . strtoupper(__('Empty Body')) . ')';
+				$body = '(' . strtoupper(__(EMPTYBODY)) . ')';
 			}
 			else
 			{
@@ -297,7 +382,7 @@ class EntryController extends Controller
 		if (intval($entry->is_template_flag) === 0)
 		{				
 			// get the template
-			$template = DB::table('entries')->where('is_template_flag', 1)->first();
+			$template = $this->getDefaultTemplate();
 				
 			if ($template !== null)
 			{	
@@ -331,5 +416,29 @@ class EntryController extends Controller
 		$data['description_copy2'] = $entry->description_language1;
 		
 		return $data;
-	}	
+	}
+
+	private function getDefaultTemplate()
+	{
+		$template_id = intval(Auth::user()->template_id);
+				
+		if ($template_id === 0) // default template not set, use first template
+		{
+			$entry = Entry::select()
+				->where('user_id', '=', Auth::id())
+				->where('is_template_flag', '=', 1)
+				->first();
+		}
+		else // get user's default template
+		{
+			$entry = Entry::select()
+				->where('user_id', '=', Auth::id())
+				->where('is_template_flag', '=', 1)
+				->where('id', '=',  $template_id)
+				->first();
+		}
+		
+		return $entry;
+	}
+	
 }

@@ -34,13 +34,19 @@ Route::group(['prefix' => 'entries'], function () {
 	// delete / confirm delete
 	Route::get('/confirmdelete/{entry}','EntryController@confirmdelete')->middleware('auth');
 	Route::post('/delete/{entry}','EntryController@delete')->middleware('auth');
+
+	// crypt / encrypt
+	Route::get('/crypt', 'EntryController@crypt')->middleware('auth');
+	Route::post('/encrypt', 'EntryController@encrypt')->middleware('auth');
 	
 	// other gets
 	Route::get('/viewcount/{entry}','EntryController@viewcount')->middleware('auth');
 	Route::get('/view/{entry}','EntryController@view')->middleware('auth');
 	Route::get('/gen/{entry}','EntryController@gen')->middleware('auth');
 	Route::get('/search/{entry}','EntryController@search')->middleware('auth');
-	Route::get('/gendex/{entry}','EntryController@gendex')->middleware('auth');
+	//Route::get('/gendex/{entry}','EntryController@gendex')->middleware('auth');
+	Route::get('/gendex/{id?}','EntryController@gendex')->middleware('auth');
+	Route::get('/settemplate/{id}','EntryController@settemplate')->middleware('auth');
 	
 	// other posts
 	
