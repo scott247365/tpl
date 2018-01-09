@@ -16,7 +16,8 @@
 
 Auth::routes();
 
-Route::get('/', 'EntryController@index')->middleware('auth');
+Route::get('/', 'EntryController@home')->middleware('auth');
+Route::get('/timer', 'EntryController@timer');
 
 Route::group(['prefix' => 'entries'], function () {
 	
@@ -47,6 +48,7 @@ Route::group(['prefix' => 'entries'], function () {
 	//Route::get('/gendex/{entry}','EntryController@gendex')->middleware('auth');
 	Route::get('/gendex/{id?}','EntryController@gendex')->middleware('auth');
 	Route::get('/settemplate/{id}','EntryController@settemplate')->middleware('auth');
+	Route::get('/timer', 'EntryController@timer')->middleware('auth');
 	
 	// other posts
 	

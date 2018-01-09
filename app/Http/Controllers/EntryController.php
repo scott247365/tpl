@@ -124,6 +124,12 @@ class EntryController extends Controller
 
     	return view('entries.settemplate');
 	}
+
+    public function home()
+    {
+		//return redirect('/entries/gendex');
+		return $this->gendex();
+	}
 	
     public function gendex($id = INTNOTSET)
     {
@@ -333,6 +339,11 @@ class EntryController extends Controller
 
 		return view('entries.hash', $data);
 	}
+	
+    public function timer()
+    {
+		return view('entries.timer');
+    }		
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Privates
