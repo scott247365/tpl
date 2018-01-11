@@ -8,7 +8,7 @@
 
 <div style="margin:0;padding:0; margin-top:20px; margin-left:50px;" class="single-view-page container">
                
-<form method="POST" action="/entries/hasher">
+<form method="POST" action="/hasher">
 
 	<?php //dd($hash); ?>
 	<div class="form-group">

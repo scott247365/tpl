@@ -3,12 +3,13 @@
 	<div class="submenu">
 		<ul class="submenu">
 			{{ $slot }}
-			@component('menu-icons-links')
+			@component('menu-icons-links', ['data' => (isset($data) ? $data : null)])
 			@endcomponent
 		</ul>		
 	</div>
 
 	<?php 
+		//dd($taskCount);
 		// echo 'submenu: '; 
 		//dd($templates[0]->id); 
 		$templates = (isset($templates)) ? $templates : [];

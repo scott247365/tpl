@@ -10,47 +10,80 @@ class TasksController extends Controller
 {
     public function index()
     {
-    	$user = Auth::user();
-    	return view('welcome',compact('user'));
+		$tasks = Task::select()
+			->where('user_id', '=', Auth::id())
+			->orderByRaw('tasks.id ASC')
+			->get();
+		
+    	return view('tasks.index', ['tasks' => $tasks, 'data' => $this->viewData]);
     }
-
+	
     public function add()
     {
-    	return view('add');
+    	return view('tasks.add');
     }
 
     public function create(Request $request)
     {
     	$task = new Task();
     	$task->description = $request->description;
+    	$task->link = $request->link;
     	$task->user_id = Auth::id();
     	$task->save();
-    	return redirect('/'); 
+		
+    	return redirect('/tasks'); 
     }
 
     public function edit(Task $task)
     {
-
     	if (Auth::check() && Auth::user()->id == $task->user_id)
-        {            
-                return view('edit', compact('task'));
+        {
+			return view('tasks.edit', compact('task'));
         }           
-        else {
-             return redirect('/');
-         }            	
+        else 
+		{
+             return redirect('/tasks');
+		}            	
+    }
+	
+    public function update(Request $request, Task $task)
+    {	
+    	if (Auth::check() && Auth::user()->id == $task->user_id)
+        {
+			//dd($request);
+				
+			//$task->title = $request->title;
+			$task->description = $request->description;
+			$task->link = $request->link;
+			$task->save();
+			
+			return redirect('/tasks/'); 
+		}
+		else
+		{
+			return redirect('/');
+		}
     }
 
-    public function update(Request $request, Task $task)
-    {
-    	if(isset($_POST['delete'])) {
-    		$task->delete();
-    		return redirect('/');
-    	}
-    	else
-    	{
-    		$task->description = $request->description;
-	    	$task->save();
-	    	return redirect('/'); 
-    	}    	
+    public function confirmdelete(Task $task)
+    {	
+    	if (Auth::check() && Auth::user()->id == $task->user_id)
+        {			
+			return view('tasks.confirmdelete', compact('task'));
+        }           
+        else 
+		{
+             return redirect('/tasks');
+		}            	
     }
+	
+    public function delete(Task $task)
+    {	
+    	if (Auth::check() && Auth::user()->id == $task->user_id)
+        {			
+			$task->delete();
+		}
+		
+		return redirect('/tasks');
+    }	
 }

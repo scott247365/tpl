@@ -4,7 +4,7 @@
 
 <?php //echo 'gendex<br/>'; // dd($templates); ?>
 
-@component('menu-submenu', ['templates' => $templates])
+@component('menu-submenu', ['templates' => $templates, 'data' => $data])
 	@component('menu-icons-start')@endcomponent
 	@component('menu-icons-entry') {{ $entry->id }} @endcomponent
 @endcomponent

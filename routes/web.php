@@ -16,8 +16,33 @@
 
 Auth::routes();
 
+// root
 Route::get('/', 'EntryController@home')->middleware('auth');
+
+// timer
 Route::get('/timer', 'EntryController@timer');
+
+// crypt / encrypt
+Route::get('/hash', 'EntryController@hash')->middleware('auth');
+Route::post('/hasher', 'EntryController@hasher')->middleware('auth');
+
+Route::group(['prefix' => 'tasks'], function () {
+	
+	Route::get('/', 'TasksController@index')->middleware('auth');
+	Route::get('/index', 'TasksController@index')->middleware('auth');
+
+	// add/create
+	Route::get('/add','TasksController@add')->middleware('auth');
+	Route::post('/create','TasksController@create')->middleware('auth');
+
+	// edit/update
+	Route::get('/edit/{task}','TasksController@edit')->middleware('auth');
+	Route::post('/update/{task}','TasksController@update')->middleware('auth');
+
+	// delete / confirm delete
+	Route::get('/confirmdelete/{task}','TasksController@confirmdelete')->middleware('auth');
+	Route::post('/delete/{task}','TasksController@delete')->middleware('auth');
+});
 
 Route::group(['prefix' => 'entries'], function () {
 	
@@ -35,10 +60,6 @@ Route::group(['prefix' => 'entries'], function () {
 	// delete / confirm delete
 	Route::get('/confirmdelete/{entry}','EntryController@confirmdelete')->middleware('auth');
 	Route::post('/delete/{entry}','EntryController@delete')->middleware('auth');
-
-	// crypt / encrypt
-	Route::get('/hash', 'EntryController@hash')->middleware('auth');
-	Route::post('/hasher', 'EntryController@hasher')->middleware('auth');
 	
 	// other gets
 	Route::get('/viewcount/{entry}','EntryController@viewcount')->middleware('auth');

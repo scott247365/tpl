@@ -183,8 +183,8 @@ class EntryController extends Controller
 				->where('user_id', '=', Auth::id())
 				->where('is_template_flag', '<>', 1)
 				->where('view_count', '>', 0)
-				//->orderByRaw('is_template_flag, entries.view_count DESC')
-				->orderBy('title')
+				->orderByRaw('is_template_flag, entries.view_count DESC, entries.title')				
+				//->orderBy('title')
 				->limit(25)
 				->get();
 
@@ -199,9 +199,8 @@ class EntryController extends Controller
 			
 			$data['entries'] = $entries;
 			$data['templates'] = $templates;
-	
-			//dd($data);
-								
+			$data['data'] = $this->viewData;
+						
 			return view('entries.gendex', $data);
         }          	
     }
@@ -220,6 +219,26 @@ class EntryController extends Controller
              return redirect('/');
 		}            	
     }
+	
+    public function update(Request $request, Entry $entry)
+    {	
+    	if (Auth::check() && Auth::user()->id == $entry->user_id)
+        {
+			//dd($request);
+				
+			$entry->title 					= $request->title;
+			$entry->description 			= $request->description;
+			$entry->description_language1 	= $request->description_language1;
+			$entry->is_template_flag 		= isset($request->is_template_flag) ? 1 : 0;
+			$entry->save();
+			
+			return redirect('/entries/gendex/' . $entry->id); 
+		}
+		else
+		{
+			return redirect('/');
+		}
+    }	
 	
     public function confirmdelete(Request $request, Entry $entry)
     {	
@@ -247,27 +266,7 @@ class EntryController extends Controller
 		
 		return redirect('/entries/gendex');
     }
-	
-    public function update(Request $request, Entry $entry)
-    {	
-    	if (Auth::check() && Auth::user()->id == $entry->user_id)
-        {
-			//dd($request);
-				
-			$entry->title 					= $request->title;
-			$entry->description 			= $request->description;
-			$entry->description_language1 	= $request->description_language1;
-			$entry->is_template_flag 		= isset($request->is_template_flag) ? 1 : 0;
-			$entry->save();
-			
-			return redirect('/entries/gendex/' . $entry->id); 
-		}
-		else
-		{
-			return redirect('/');
-		}
-    }
-	
+		
     public function search($search)
     {
 		$rc = 0;
