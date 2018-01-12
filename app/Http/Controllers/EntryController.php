@@ -47,8 +47,8 @@ class EntryController extends Controller
     	if (Auth::check())
         {            
 			//todo $categories = Category::lists('title', 'id');
-			
-			return view('entries.add');
+	
+			return view('entries.add', ['data' => $this->viewData]);							
         }           
         else 
 		{
@@ -74,7 +74,10 @@ class EntryController extends Controller
 			
 			$entry->save();
 			
-			return redirect('/entries/gendex/' . $entry->id);
+			if ($entry->is_template_flag)
+				return redirect('/entries/templates'); 
+			else
+				return redirect('/entries/gendex/' . $entry->id);
         }           
         else 
 		{
@@ -99,7 +102,8 @@ class EntryController extends Controller
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
         {
 			$entry = $this->merge_entry($entry);
-					
+			$entry['data'] = $this->viewData;
+
 			return view('entries.gen', $entry);			
         }           
         else 
@@ -159,7 +163,7 @@ class EntryController extends Controller
 						->where('user_id', '=', Auth::id())
 						->where('is_template_flag', '=', 1)
 						->first();
-						
+
 				}
 				else // get user's default template
 				{
@@ -169,10 +173,10 @@ class EntryController extends Controller
 						->where('id', '=',  $template_id)
 						->first();
 				}
-					
+
 				$entry->description = str_replace("[[body]]", $this->fixEmpty('', BODY), $entry->description) . '<br/>';
 				$entry->description_language1 = str_replace("[[body]]", $this->fixEmpty('', BODY), $entry->description_language1) . '<br/>';
-					
+
 				$data = $this->merge_entry($entry);	
 			}			
 			
@@ -212,7 +216,7 @@ class EntryController extends Controller
 			// flags come from dev mysql as ints and prod mysql as strings
 			$entry['is_template'] = (intval($entry->is_template_flag) === 1);
 
-			return view('entries.edit', compact('entry'));
+			return view('entries.edit', ['entry' => $entry, 'data' => $this->viewData]);							
         }           
         else 
 		{
@@ -232,7 +236,10 @@ class EntryController extends Controller
 			$entry->is_template_flag 		= isset($request->is_template_flag) ? 1 : 0;
 			$entry->save();
 			
-			return redirect('/entries/gendex/' . $entry->id); 
+			if ($entry->is_template_flag)
+				return redirect('/entries/templates'); 
+			else
+				return redirect('/entries/gendex/' . $entry->id); 
 		}
 		else
 		{
@@ -247,7 +254,7 @@ class EntryController extends Controller
 			$entry->description = nl2br($this->fixEmpty(trim($entry->description), EMPTYBODY));
 			$entry->description_language1 = nl2br($this->fixEmpty(trim($entry->description_language1), EMPTYBODY));
 			
-			return view('entries.delete', compact('entry'));
+			return view('entries.delete', ['entry' => $entry, 'data' => $this->viewData]);							
         }           
         else 
 		{
@@ -262,6 +269,12 @@ class EntryController extends Controller
 			//dd($entry);
 			
 			$entry->delete();
+			
+			if ($entry->is_template_flag)
+				return redirect('/entries/templates'); 
+			else
+				return redirect('/entries/gendex/');
+			
 		}
 		
 		return redirect('/entries/gendex');

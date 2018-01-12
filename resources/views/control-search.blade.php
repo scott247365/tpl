@@ -167,7 +167,7 @@ function setTemplate(url)
 		<div class="input-group">
 		
 			<select name="template" id="template" class="form-control" onchange="onTemplateChange(this.value)">
-					<option value="-1">Select</option>
+					<option value="-1">No Layout</option>
 				@foreach($templates as $entry)
 					<option value="{{ $entry->id }}" {{ ($entry->id === intval(Auth::user()->template_id)) ? 'selected' : '' }}>{{ $entry->title }}</option>
 				@endforeach

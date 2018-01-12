@@ -9,15 +9,11 @@
 	<div class="container">
 	<h1>Edit</h1>
 
-<form method="POST" action="/tasks/update/{{ $task->id }}">
+<form method="POST" action="/tags/update/{{ $tag->id }}">
 
 	<div class="form-group">
-		<input type="text" name="description" class="form-control" value="{{$task->description }}"></input>
+		<input type="text" name="name" class="form-control" value="{{$tag->name }}"></input>
 	</div>
-
-	<div class="form-group">
-		<input type="text" name="link" class="form-control" value="{{$task->link }}"></input>	
-	</div>	
 
 	<div class="form-group">
 		<button type="submit" name="update" class="btn btn-primary">Update</button>

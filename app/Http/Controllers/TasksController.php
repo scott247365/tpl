@@ -20,7 +20,7 @@ class TasksController extends Controller
 	
     public function add()
     {
-    	return view('tasks.add');
+    	return view('tasks.add', ['data' => $this->viewData]);
     }
 
     public function create(Request $request)
@@ -38,8 +38,8 @@ class TasksController extends Controller
     {
     	if (Auth::check() && Auth::user()->id == $task->user_id)
         {
-			return view('tasks.edit', compact('task'));
-        }           
+			return view('tasks.edit', ['task' => $task, 'data' => $this->viewData]);			
+        }
         else 
 		{
              return redirect('/tasks');
@@ -69,7 +69,7 @@ class TasksController extends Controller
     {	
     	if (Auth::check() && Auth::user()->id == $task->user_id)
         {			
-			return view('tasks.confirmdelete', compact('task'));
+			return view('tasks.confirmdelete', ['task' => $task, 'data' => $this->viewData]);				
         }           
         else 
 		{

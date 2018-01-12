@@ -2,7 +2,7 @@
 
 @section('content')
 
-@component('menu-submenu')
+@component('menu-submenu', ['data' => $data])
 	@component('menu-icons-start')@endcomponent
 @endcomponent
 
@@ -21,7 +21,7 @@
 	
 
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Add Task</button>
+        <button type="submit" class="btn btn-primary">Add</button>
     </div>
 {{ csrf_field() }}
 </form>

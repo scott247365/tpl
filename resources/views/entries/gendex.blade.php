@@ -11,8 +11,46 @@
 
 <div style="margin-top: 20px;" class="container">
 
-<div style="width: 30%; min-width: 400px; margin-right: 20px;" class="float-left">
+<div style="float:left; display:block; width: 30%; min-width: 400px; margin-right: 20px;" class="">
+
 	@if (Auth::check())
+
+	@if (false)
+	<div style="">
+		<form method="POST" action="/entries/switch">
+
+			<?php 
+				/*
+					echo 'search: <br/>';
+					dd($templates); 
+					window.location.href = parms + cat;
+					this.value
+					
+						@if ($entry->id === Auth::user()->template_id) :
+							<option value="{{ $entry->id }}">{{ $entry->title }}</option>
+						@else
+							<option value="{{ $entry->id }}">{{ $entry->title }}</option>
+						@endif
+				*/
+			?>
+
+			<div class="input-group">
+			
+				<select name="template" id="template" style="font-size:.8em; padding:2px; margin:0px;" class="form-control" onchange="onTemplateChange(this.value)">
+					@foreach($templates as $record)
+						<option value="{{ $record->id }}" {{ ($record->id === intval(Auth::user()->template_id)) ? 'selected' : '' }}>{{ $record->title }}</option>
+					@endforeach
+				</select>
+				
+			</div>
+			
+			{{ csrf_field() }}
+		</form>		
+	</div>
+	
+	@endif
+	
+	<div style="" class="">
 		<table class="table table-striped">
 			<tbody>
 			@foreach($entries as $listentry)
@@ -35,6 +73,7 @@
 			@endforeach
 			</tbody>
 		</table>
+	</div>
 	@else
 		<h3>You need to log in. <a href="/login">Click here to login</a></h3>
 	@endif 

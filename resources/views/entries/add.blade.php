@@ -2,7 +2,7 @@
 
 @section('content')
 
-@component('menu-submenu')
+@component('menu-submenu', ['data' => $data])
 	@component('menu-icons-start')@endcomponent
 @endcomponent
 

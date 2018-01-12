@@ -26,6 +26,23 @@ Route::get('/timer', 'EntryController@timer');
 Route::get('/hash', 'EntryController@hash')->middleware('auth');
 Route::post('/hasher', 'EntryController@hasher')->middleware('auth');
 
+Route::group(['prefix' => 'tags'], function () {
+	Route::get('/', 'TagsController@index')->middleware('auth');
+	Route::get('/index', 'TagsController@index')->middleware('auth');
+
+	// add/create
+	Route::get('/add','TagsController@add')->middleware('auth');
+	Route::post('/create','TagsController@create')->middleware('auth');
+
+	// edit/update
+	Route::get('/edit/{task}','TagsController@edit')->middleware('auth');
+	Route::post('/update/{task}','TagsController@update')->middleware('auth');
+
+	// delete / confirm delete
+	Route::get('/confirmdelete/{task}','TagsController@confirmdelete')->middleware('auth');
+	Route::post('/delete/{task}','TagsController@delete')->middleware('auth');
+});
+
 Route::group(['prefix' => 'tasks'], function () {
 	
 	Route::get('/', 'TasksController@index')->middleware('auth');
