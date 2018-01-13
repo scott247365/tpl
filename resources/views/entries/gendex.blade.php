@@ -14,7 +14,7 @@
 <div style="float:left; display:block; width: 30%; min-width: 400px; margin-right: 20px;" class="">
 
 	@if (Auth::check())
-
+		
 	@if (false)
 	<div style="">
 		<form method="POST" action="/entries/switch">

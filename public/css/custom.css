@@ -82,6 +82,43 @@ Controls
 	display: none;
 }
 
+.form-control-big input[type="text"]
+, .form-control-big input[type="email"]
+, .form-control-big input[type="password"] 
+{
+	font-size: 1.5em;
+	padding: 5px 5px 5px 10px;
+	margin-top: 10px;
+	height: 45px;
+	border-radius: 7px;
+}
+
+.form-control-big textarea
+{
+	font-size: 1.5em;
+	padding: 5px 5px 5px 10px;
+	margin-top: 10px;
+	border-radius: 7px;
+	margin-bottom: 20px;
+}
+
+.form-control-big input[type="checkbox"] {
+    height: 20px;
+    width: 20px;
+	line-height: 20px;
+	vertical-align: middle;
+	font-size: 1.5em;
+	margin-bottom: 10px;
+}
+
+.checkbox-big-label
+{
+	font-size: 1.2em;
+	padding: 5px 5px 5px 0px;
+	margin: 0px 0px 10px 0px;
+}
+
+	
 /***************************************************
 Sub Menu
 ***************************************************/
