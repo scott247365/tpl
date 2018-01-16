@@ -9,6 +9,7 @@ php artisan migrate
 php artisan migrate:rollback
 
 
-// make models and controllers
+// create Migration, Model and Controller
 php artisan make:model Tag -m -c
+
 

@@ -14,3 +14,7 @@
 			? '<span style="background-color: LightGray; color: red; margin-left: 3px; font-size:.8em; padding:3px 5px; font-weight:bold;" class="badge">' . $taskCount . '</span>' 
 			: '' ?> </a>
 	</li>
+	<li class="topMenuLiCenter">
+		<a href='/faqs'>Kbase</a>
+	</li>
+	

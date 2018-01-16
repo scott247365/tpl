@@ -26,4 +26,32 @@ class Controller extends BaseController
 		//dd($this->taskCount);
 	}
 	
+	protected function formatLinks($text)
+	{
+		$lines = explode("\r\n", $text);
+		//dd($text);
+		$text = "";
+		
+		foreach($lines as $line)
+		{
+			preg_match('/\[(.*?)\]/', $line, $title);		// replace the chars between []
+			preg_match('/\((.*?)\)/', $line, $link);	// replace the chars between ()
+			
+			if (sizeof($title) > 0) // if its a link
+			{
+				$text .= '<a href=' . $link[1] . ' target="_blank">' . $title[1] . '</a><br/>';
+			}
+			else if (mb_strlen($line) === 0) // blank line
+			{
+				$text .= $line; // . '\r\n';
+			}
+			else // regular line with text
+			{
+				$text .= $line; // . '\r\n';
+			}
+		}
+		
+		return $text;
+	}	
+	
 }

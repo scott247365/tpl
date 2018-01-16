@@ -151,7 +151,10 @@ class EntryController extends Controller
 					->where('id', '=' , $id)
 					->first();
 					
-				$data = $this->merge_entry($entry);	
+				$data = $this->merge_entry($entry);
+				$data['entry']['description'] = $this->formatLinks($data['entry']['description']);
+				$data['entry']['description_language1'] = $this->formatLinks($data['entry']['description_language1']);
+				//dd($data['entry']['description']);
 			}
 			else // get the default template
 			{
@@ -374,9 +377,9 @@ class EntryController extends Controller
 		return $text;
 	}
 	
-	private function merge($template, $description, $style = false)
+	private function merge($layout, $text, $style = false)
 	{
-		$body = trim($description);
+		$body = trim($text);
 		if (mb_strlen($body) == 0)
 		{
 			if ($style === true)
@@ -391,19 +394,19 @@ class EntryController extends Controller
 			}
 		}
 		
-		if (mb_strlen($template) > 0)
+		if (mb_strlen($layout) > 0)
 		{
 			if ($style)
 				$body = BODYSTYLE . $body . ENDBODYSTYLE;
 				
-			$description = nl2br(str_replace("[[body]]", $body, trim($template))) . '<br/>';
+			$text = nl2br(str_replace("[[body]]", $body, trim($layout))) . '<br/>';
 		}
 		else
 		{
-			$description = nl2br($body) . '<br/>';
+			$text = nl2br($body) . '<br/>';
 		}
 	
-		return $description;
+		return $text;
 	}		
 	
 	private function merge_entry(Entry $entry)

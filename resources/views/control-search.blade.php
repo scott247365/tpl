@@ -144,7 +144,7 @@ function setTemplate(url)
 <div id="searchList" style="margin-left: 10px; display:none; padding-top: 15px;" class="dropdown">
 </div>
 
-@if(count($templates) > 0)
+@if(isset($templates) && count($templates) > 0)
 <div class="float-left" style="margin-top: 10px; margin-left: 20px; max-width:200px;">
 
 	<form method="POST" action="/entries/switch">

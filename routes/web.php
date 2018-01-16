@@ -26,6 +26,24 @@ Route::get('/timer', 'EntryController@timer');
 Route::get('/hash', 'EntryController@hash')->middleware('auth');
 Route::post('/hasher', 'EntryController@hasher')->middleware('auth');
 
+Route::group(['prefix' => 'faqs'], function () {
+	Route::get('/', 'FaqsController@index')->middleware('auth');
+	Route::get('/index', 'FaqsController@index')->middleware('auth');
+	Route::get('/view/{faq}','FaqsController@view')->middleware('auth');
+
+	// add/create
+	Route::get('/add','FaqsController@add')->middleware('auth');
+	Route::post('/create','FaqsController@create')->middleware('auth');
+
+	// edit/update
+	Route::get('/edit/{faq}','FaqsController@edit')->middleware('auth');
+	Route::post('/update/{faq}','FaqsController@update')->middleware('auth');
+
+	// delete / confirm delete
+	Route::get('/confirmdelete/{faq}','FaqsController@confirmdelete')->middleware('auth');
+	Route::post('/delete/{faq}','FaqsController@delete')->middleware('auth');
+});
+
 Route::group(['prefix' => 'tags'], function () {
 	Route::get('/', 'TagsController@index')->middleware('auth');
 	Route::get('/index', 'TagsController@index')->middleware('auth');
@@ -65,6 +83,7 @@ Route::group(['prefix' => 'entries'], function () {
 	
 	Route::get('/index', 'EntryController@index')->middleware('auth');
 	Route::get('/templates', 'EntryController@templates')->middleware('auth');
+	Route::get('/{id?}','EntryController@gendex')->middleware('auth');
 
 	// add/create
 	Route::get('/add','EntryController@add')->middleware('auth');
