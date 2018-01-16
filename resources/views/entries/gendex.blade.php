@@ -4,9 +4,12 @@
 
 <?php //echo 'gendex<br/>'; // dd($templates); ?>
 
-@component('menu-submenu', ['templates' => $templates, 'data' => $data])
+@component('menu-submenu')
 	@component('menu-icons-start')@endcomponent
 	@component('menu-icons-entry') {{ $entry->id }} @endcomponent
+	@component('menu-icons-links', ['data' => (isset($data) ? $data : null)])@endcomponent	
+	@component('control-search')@endcomponent	
+	@component('control-templates-dropdown', ['templates' => $templates])@endcomponent	
 @endcomponent
 
 <div style="margin-top: 20px;" class="container">

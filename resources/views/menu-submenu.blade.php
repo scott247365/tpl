@@ -1,21 +1,9 @@
-<nav class="margin:0; padding:0; large-3 medium-4 columns" id="submenu">
+<nav class="large-3 medium-4 columns" id="submenu">
 	
-	<div class="submenu">
-		<ul class="submenu">
-			{{ $slot }}
-			@component('menu-icons-links', ['data' => (isset($data) ? $data : null)])
-			@endcomponent
-		</ul>		
+	<div style="margin:0px 0px 10px 10px; padding:0;" class="submenu">
+		{{ $slot }}
 	</div>
-
-	<?php 
-		//dd($taskCount);
-		// echo 'submenu: '; 
-		//dd($templates[0]->id); 
-		$templates = (isset($templates)) ? $templates : [];
-	?>
-	
-	@component('control-search', ['templates' => $templates])
-	@endcomponent
 	
 </nav>
+
+<div style="clear:both;" />

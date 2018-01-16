@@ -5,6 +5,8 @@
 @component('menu-submenu')
 	@component('menu-icons-start')@endcomponent
 	@component('menu-icons-entry') {{ $entry->id }} @endcomponent
+	@component('menu-icons-links', ['data' => (isset($data) ? $data : null)])@endcomponent	
+	@component('control-search')@endcomponent	
 @endcomponent
 
 <div class="single-view-page container">
