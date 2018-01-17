@@ -12,8 +12,10 @@ class FaqsController extends Controller
     {
 		$faqs = Faq::select()
 			->where('user_id', '=', Auth::id())
-			->orderByRaw('faqs.id ASC')
+			->orderByRaw('faqs.title ASC')
 			->get();
+			
+		$faqs = $this->formatList($faqs);
 		
     	return view('faqs.index', ['faqs' => $faqs, 'data' => $this->viewData]);
     }
@@ -99,5 +101,80 @@ class FaqsController extends Controller
              return redirect('/faqs');
 		}            	
     }	
+
 	
+    public function search($search)
+    {
+		$rc = 0;
+		$userId = 1;
+		$faqs = null;
+
+		if (mb_strlen($search) > 0)
+		{
+			// strip everything except alpha-numerics, colon, and spaces
+			$search = preg_replace("/[^:a-zA-Z0-9 .]+/", "", $search);
+		}
+		else
+		{
+			echo 'no search string';
+			return $rc;
+		}
+
+		if (mb_strlen($search) == 0)
+		{
+			echo 'no search string';
+			return $rc;
+		}
+
+		$faqs = Faq::select()->whereRaw('1 = 1')
+			->where('user_id', '=', Auth::id())
+			->where('title', 'like', '%' . $search . '%')
+			->orWhere('description', 'like', '%' . $search . '%')
+			->orderBy('title')
+			->limit(25)
+			->get();
+
+		$faqs = $this->formatList($faqs);
+			
+		$faqs = compact('faqs');
+
+		//dd($faqs);
+				
+    	return view('faqs.search', $faqs);
+	}
+	
+	private function formatList($faqs)
+	{
+		foreach($faqs as $faq)
+		{
+			$faq->description = $this->formatLinks($faq->description);
+			//dd($description);
+			
+			/*
+			$lines = explode("\r\n", $faq);
+			$text = "";
+			
+			foreach($lines as $line)
+			{
+				preg_match('/\[(.*?)\]/', $line, $title);		// replace the chars between []
+				preg_match('/\((.*?)\)/', $line, $link);	// replace the chars between ()
+				
+				if (sizeof($title) > 0) // if its a link
+				{
+					$text .= '<a href=' . $link[1] . ' target="_blank">' . $title[1] . '</a><br/>';
+				}
+				else if (mb_strlen($line) === 0) // blank line
+				{
+					$text .= $line; // . '\r\n';
+				}
+				else // regular line with text
+				{
+					$text .= $line; // . '\r\n';
+				}
+			}
+			*/
+		}
+		
+		return $faqs;
+	}
 }

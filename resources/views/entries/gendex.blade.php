@@ -8,7 +8,7 @@
 	@component('menu-icons-start')@endcomponent
 	@component('menu-icons-entry') {{ $entry->id }} @endcomponent
 	@component('menu-icons-links', ['data' => (isset($data) ? $data : null)])@endcomponent	
-	@component('control-search')@endcomponent	
+	@component('control-search', ['command' => '/entries/search/', 'placeholder' => 'Search Templates'])@endcomponent
 	@component('control-templates-dropdown', ['templates' => $templates])@endcomponent	
 @endcomponent
 
@@ -106,7 +106,7 @@
 			<a href='#' onclick="javascript:copyToClipboardAndCount('entry', 'entryCopy', '/entries/viewcount/{{$entry->id}}')";>
 				<span class="glyphCustom glyphicon glyphicon-copy"></span>
 			</a>
-			<span name="description" class="">{!! $entry->description !!}</span>	
+			<span name="description" class="" id="entry">{!! $entry->description !!}</span>	
 			<span class="entry-copy" id="entryCopy">{!! $description_copy !!}</span>		
 		</div>
 		
@@ -114,7 +114,7 @@
 			<a href='#' onclick="javascript:copyToClipboardAndCount('entry2', 'entryCopy2', '/entries/viewcount/{{$entry->id}}')";>
 				<span class="glyphCustom glyphicon glyphicon-copy"></span>
 			</a>
-			<span name="description_language1" class="">{!! $entry->description_language1 !!}</span>
+			<span name="description_language1" class="" id="entry2">{!! $entry->description_language1 !!}</span>
 			<span class="entry-copy" id="entryCopy2">{!! $description_copy2 !!}</span>		
 		</div>
 	</div>

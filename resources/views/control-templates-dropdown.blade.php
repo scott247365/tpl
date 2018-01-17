@@ -1,5 +1,46 @@
 
 @if(isset($templates) && count($templates) > 0)
+	
+<script>
+
+function onTemplateChange(id)
+{		
+	setTemplate('/entries/settemplate/' + id);
+}
+
+function setTemplate(url) 
+{
+	var xhttp = new XMLHttpRequest();
+	
+	xhttp.onreadystatechange = function() 
+	{
+		if (this.status == 200)
+		{
+			//alert(this.responseText);
+		}
+					
+		if (this.readyState == 4 && this.status == 200) 
+		{	
+			/*
+			alert(
+				'call response: ' + this.responseText +
+				', length: ' + this.responseText.length 
+				+ ', char: ' + this.responseText.charCodeAt(0) 
+				+ ' ' + this.responseText.charCodeAt(1)
+			);
+			*/
+
+			window.location.reload();
+		}
+	};
+	
+	xhttp.open("GET", url, true);
+	xhttp.send();
+}
+
+</script>
+
+
 <div class="float-left" style="margin-top: 10px; margin-left: 20px; max-width:200px;">
 
 	<form method="POST" action="/entries/switch">

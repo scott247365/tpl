@@ -30,6 +30,7 @@ Route::group(['prefix' => 'faqs'], function () {
 	Route::get('/', 'FaqsController@index')->middleware('auth');
 	Route::get('/index', 'FaqsController@index')->middleware('auth');
 	Route::get('/view/{faq}','FaqsController@view')->middleware('auth');
+	Route::get('/search/{entry}','FaqsController@search')->middleware('auth');
 
 	// add/create
 	Route::get('/add','FaqsController@add')->middleware('auth');
@@ -101,7 +102,6 @@ Route::group(['prefix' => 'entries'], function () {
 	Route::get('/view/{entry}','EntryController@view')->middleware('auth');
 	Route::get('/gen/{entry}','EntryController@gen')->middleware('auth');
 	Route::get('/search/{entry}','EntryController@search')->middleware('auth');
-	//Route::get('/gendex/{entry}','EntryController@gendex')->middleware('auth');
 	Route::get('/gendex/{id?}','EntryController@gendex')->middleware('auth');
 	Route::get('/settemplate/{id}','EntryController@settemplate')->middleware('auth');
 	Route::get('/timer', 'EntryController@timer')->middleware('auth');

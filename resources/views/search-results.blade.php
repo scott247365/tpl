@@ -30,17 +30,17 @@ a:hover {
 <div class='popup'>
 	<span class='popuptext'>
 	
-	@foreach($entries as $entry)
+	@foreach($faqs as $faq)
 		<div style="padding: 3px 0px;" class="">
-			<a style="" href="/entries/gendex/{{$entry->id}}">{{$entry->title}}</a>
+			<a style="" href="/faqs/view/{{$faq->id}}">{{$faq->title}}</a>
 		</div>
 	@endforeach
 	
-	@if (count($entries) === 25)
+	@if (count($faqs) === 25)
 		<div style="padding: 3px 0px;" class="">
 			<span style="color: gray;" >{{ '(Only showing first 25 results)' }}</span>
 		</div>
-	@elseif (count($entries) === 0)
+	@elseif (count($faqs) === 0)
 		<span style="color: gray;" >{{ '(not found)' }}</span>
 	@endif
 	

@@ -1,4 +1,16 @@
+<?php
+
+$command = (isset($command) ? $command : '/entries/search/');
+$placeholder = (isset($placeholder) ? $placeholder : 'Search Templates');
+$popup = (isset($popup) ? $popup : true);
+
+?>
+
 <script>
+
+window.onload = function(){
+	$('#search').focus();
+};
 
 function clearSearch()
 {
@@ -13,7 +25,7 @@ function onInput()
 		
 	if (val.length >= 3)
 	{
-		search('/entries/search/' + val);
+		search('{{ $command }}' + val);
 	}
 	else
 	{
@@ -76,41 +88,6 @@ function search(url)
 	xhttp.send();
 }
 
-function onTemplateChange(id)
-{		
-	setTemplate('/entries/settemplate/' + id);
-}
-
-function setTemplate(url) 
-{
-	var xhttp = new XMLHttpRequest();
-	
-	xhttp.onreadystatechange = function() 
-	{
-		if (this.status == 200)
-		{
-			//alert(this.responseText);
-		}
-					
-		if (this.readyState == 4 && this.status == 200) 
-		{	
-			/*
-			alert(
-				'call response: ' + this.responseText +
-				', length: ' + this.responseText.length 
-				+ ', char: ' + this.responseText.charCodeAt(0) 
-				+ ' ' + this.responseText.charCodeAt(1)
-			);
-			*/
-
-			window.location.reload();
-		}
-	};
-	
-	xhttp.open("GET", url, true);
-	xhttp.send();
-}
-
 </script>
 
 <style>
@@ -122,12 +99,15 @@ function setTemplate(url)
 }
 </style>
 
+<!-- --------------------------------------------- -->
+<!-- This is the Search control and clear X button -->
+<!-- --------------------------------------------- -->
 <div class="float-left" style="margin-top: 10px; margin-left: 20px; max-width:200px;">
 
-	<form method="POST" action="/entries/search">
+	<form method="POST" action="{{ $command }}">
 	
 		<div class="input-group">
-			<input type="text" id="search" name="search" class="form-control" placeholder="Search Templates" value="" oninput="onInput();" autocomplete="off" />
+			<input type="text" id="search" name="search" class="form-control" placeholder="{{ $placeholder }}" value="" oninput="onInput();" autocomplete="off" />
 			
 			<span class="input-group-btn">
 				<button style="width:50%;border:1px solid LightGray;" onclick="clearSearch()" class="btn btn-secondary" type="button">
@@ -141,6 +121,10 @@ function setTemplate(url)
 		
 </div>
 
+<?php if ( $popup ) : ?>
+
 <div id="searchList" style="margin-left: 10px; display:none; padding-top: 15px;" class="dropdown">
 </div>
+
+<?php endif; ?>
 

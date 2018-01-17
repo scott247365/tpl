@@ -4,6 +4,8 @@
 
 @component('menu-submenu')
 	@component('menu-icons-start')@endcomponent
+	@component('menu-icons-links', ['data' => (isset($data) ? $data : null)])@endcomponent	
+	@component('control-search', ['command' => '/faqs/search/', 'placeholder' => 'Search Kbase'])@endcomponent
 @endcomponent
 
 <div class="container">
