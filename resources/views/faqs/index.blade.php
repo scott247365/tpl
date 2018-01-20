@@ -25,7 +25,7 @@
 										
 					<td>
 					@if (isset($faq->link) && mb_strlen($faq->link) > 0 && mb_substr($faq->link, 0, 4) === "http")
-						<a href="{{$faq->link}}" target="_blank">{{$faq->title}}<span style="margin-left: 5px;" class="glyphCustom glyphicon glyphicon-share-alt"></span></a>
+						<a style="font-size:1.1em;" href="{{$faq->link}}" target="_blank">{{$faq->title}}<span style="margin-left: 5px;" class="glyphCustom glyphicon glyphicon-share-alt"></span></a>
 					@else
 						<span style="font-size:1.1em;"><a style="font-weight:bold; color:gray;" href="/faqs/view/{{$faq->id}}">{{$faq->title}}</a></span>
 						<div>{!! $faq->description !!}</div>

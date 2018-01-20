@@ -15,12 +15,12 @@ class TasksController extends Controller
 			->orderByRaw('tasks.id ASC')
 			->get();
 		
-    	return view('tasks.index', ['tasks' => $tasks, 'data' => $this->viewData]);
+    	return view('tasks.index', ['tasks' => $tasks, 'data' => $this->getViewData()]);
     }
 	
     public function add()
     {
-    	return view('tasks.add', ['data' => $this->viewData]);
+    	return view('tasks.add', ['data' => $this->getViewData()]);
     }
 
     public function create(Request $request)
@@ -38,7 +38,7 @@ class TasksController extends Controller
     {
     	if (Auth::check() && Auth::user()->id == $task->user_id)
         {
-			return view('tasks.edit', ['task' => $task, 'data' => $this->viewData]);			
+			return view('tasks.edit', ['task' => $task, 'data' => $this->getViewData()]);			
         }
         else 
 		{
@@ -69,7 +69,7 @@ class TasksController extends Controller
     {	
     	if (Auth::check() && Auth::user()->id == $task->user_id)
         {			
-			return view('tasks.confirmdelete', ['task' => $task, 'data' => $this->viewData]);				
+			return view('tasks.confirmdelete', ['task' => $task, 'data' => $this->getViewData()]);				
         }           
         else 
 		{

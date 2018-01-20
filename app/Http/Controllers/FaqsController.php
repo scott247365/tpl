@@ -17,12 +17,12 @@ class FaqsController extends Controller
 			
 		$faqs = $this->formatList($faqs);
 		
-    	return view('faqs.index', ['faqs' => $faqs, 'data' => $this->viewData]);
+    	return view('faqs.index', ['faqs' => $faqs, 'data' => $this->getViewData()]);
     }
 	
     public function add()
     {
-    	return view('faqs.add', ['data' => $this->viewData]);
+    	return view('faqs.add', ['data' => $this->getViewData()]);
     }
 
     public function create(Request $request)
@@ -41,7 +41,7 @@ class FaqsController extends Controller
     {
     	if (Auth::check() && Auth::user()->id == $faq->user_id)
         {
-			return view('faqs.edit', ['faq' => $faq, 'data' => $this->viewData]);			
+			return view('faqs.edit', ['faq' => $faq, 'data' => $this->getViewData()]);			
         }
         else 
 		{
@@ -70,7 +70,7 @@ class FaqsController extends Controller
     {	
     	if (Auth::check() && Auth::user()->id == $faq->user_id)
         {			
-			return view('faqs.confirmdelete', ['faq' => $faq, 'data' => $this->viewData]);				
+			return view('faqs.confirmdelete', ['faq' => $faq, 'data' => $this->getViewData()]);				
         }           
         else 
 		{
@@ -94,7 +94,7 @@ class FaqsController extends Controller
         {			
 			$faq->description = $this->formatLinks(nl2br($faq->description));
 			
-			return view('faqs.view', ['faq' => $faq, 'data' => $this->viewData]);				
+			return view('faqs.view', ['faq' => $faq, 'data' => $this->getViewData()]);				
         }           
         else 
 		{
@@ -102,7 +102,6 @@ class FaqsController extends Controller
 		}            	
     }	
 
-	
     public function search($search)
     {
 		$rc = 0;

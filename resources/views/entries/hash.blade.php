@@ -6,7 +6,6 @@
 	@component('menu-icons-start')@endcomponent
 	@component('menu-icons-links', ['data' => (isset($data) ? $data : null)])@endcomponent	
 	@component('control-search')@endcomponent	
-	@component('control-templates-dropdown', ['templates' => $templates])@endcomponent	
 @endcomponent
 
 <div style="margin:0;padding:0; margin-top:20px; margin-left:50px;" class="single-view-page container">

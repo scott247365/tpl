@@ -39,7 +39,8 @@ class EntryController extends Controller
 			->orderByRaw('id')
 			->get();
 		
-    	return view('entries.index', compact('entries'));
+		return view('entries.index', ['entries' => $entries, 'data' => $this->getViewData()]);									
+//    	return view('entries.index', compact('entries'));
     }
 	
     public function add()
@@ -48,7 +49,7 @@ class EntryController extends Controller
         {            
 			//todo $categories = Category::lists('title', 'id');
 	
-			return view('entries.add', ['data' => $this->viewData]);							
+			return view('entries.add', ['data' => $this->getViewData()]);							
         }           
         else 
 		{
@@ -102,7 +103,7 @@ class EntryController extends Controller
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
         {
 			$entry = $this->merge_entry($entry);
-			$entry['data'] = $this->viewData;
+			$entry['data'] = $this->getViewData();
 
 			return view('entries.gen', $entry);			
         }           
@@ -150,11 +151,18 @@ class EntryController extends Controller
 					->where('user_id', '=', Auth::id())
 					->where('id', '=' , $id)
 					->first();
-					
-				$data = $this->merge_entry($entry);
-				$data['entry']['description'] = $this->formatLinks($data['entry']['description']);
-				$data['entry']['description_language1'] = $this->formatLinks($data['entry']['description_language1']);
-				//dd($data['entry']['description']);
+				
+				if ($entry !== null)
+				{
+					$data = $this->merge_entry($entry);
+					$data['entry']['description'] = $this->formatLinks($data['entry']['description']);
+					$data['entry']['description_language1'] = $this->formatLinks($data['entry']['description_language1']);
+				}
+				else
+				{
+					// entry doesn't exist or it's not their entry
+					$this->index();
+				}
 			}
 			else // get the default template
 			{
@@ -177,9 +185,22 @@ class EntryController extends Controller
 						->first();
 				}
 
-				$entry->description = str_replace("[[body]]", $this->fixEmpty('', BODY), $entry->description) . '<br/>';
-				$entry->description_language1 = str_replace("[[body]]", $this->fixEmpty('', BODY), $entry->description_language1) . '<br/>';
+				if ($entry === null)
+				{
+					// new user won't have any data					
+					$entry = new Entry();
+					$entry->title = "Standard Layout";
+					$entry->description = "Dear Friend,\r\n\r\nWelcome to TPL!\r\n\r\nThis is the Standard Layout.  Your template content will replace the \"body\" line below.\r\n\r\n" . BODY_PLACEHODER . "\r\n\r\nThank you for using TPL!\r\n\r\nSincerely,\r\n\r\nTeam TPL";
+					$entry->description_language1 = "Estimado Amigo,\r\n\r\n¡Bienvenidos a TPL!\r\n\r\nEste es el Standard Layout.  Su plantilla reemplace la linea \"body\" abajo.\r\n\r\n" . BODY_PLACEHODER . "\r\n\r\n¡Gracias por usar TPL!\r\n\r\nAtentamente,\r\n\r\nEquipo de TPL";
+					$entry->is_template_flag = 1;
+					$entry->user_id = Auth::id();
+								
+					$entry->save();					
+				}
 
+				$entry->description = str_replace(BODY_PLACEHODER, $this->fixEmpty('', BODY), $entry->description) . '<br/>';
+				$entry->description_language1 = str_replace(BODY_PLACEHODER, $this->fixEmpty('', BODY), $entry->description_language1) . '<br/>';
+					
 				$data = $this->merge_entry($entry);	
 			}			
 			
@@ -189,7 +210,7 @@ class EntryController extends Controller
 			$entries = Entry::select()
 				->where('user_id', '=', Auth::id())
 				->where('is_template_flag', '<>', 1)
-				->where('view_count', '>', 0)
+				->where('view_count', '>=', 0)
 				->orderByRaw('is_template_flag, entries.view_count DESC, entries.title')				
 				//->orderBy('title')
 				->limit(25)
@@ -206,9 +227,18 @@ class EntryController extends Controller
 			
 			$data['entries'] = $entries;
 			$data['templates'] = $templates;
-			$data['data'] = $this->viewData;
+			$data['data'] = $this->getViewData();
 						
-			return view('entries.gendex', $data);
+			if ($entry === null)
+			{
+				// no entries, take them to index
+				return view('entries.index', compact('entries'));
+			}
+			else
+			{
+				// show default or selected entry
+				return view('entries.gendex', $data);
+			}
         }          	
     }
 	
@@ -216,10 +246,11 @@ class EntryController extends Controller
     {
     	if (Auth::check() && Auth::user()->id == $entry->user_id)
         {
+			//dd($entry);
 			// flags come from dev mysql as ints and prod mysql as strings
 			$entry['is_template'] = (intval($entry->is_template_flag) === 1);
 
-			return view('entries.edit', ['entry' => $entry, 'data' => $this->viewData]);							
+			return view('entries.edit', ['entry' => $entry, 'data' => $this->getViewData()]);							
         }           
         else 
 		{
@@ -257,7 +288,7 @@ class EntryController extends Controller
 			$entry->description = nl2br($this->fixEmpty(trim($entry->description), EMPTYBODY));
 			$entry->description_language1 = nl2br($this->fixEmpty(trim($entry->description_language1), EMPTYBODY));
 			
-			return view('entries.delete', ['entry' => $entry, 'data' => $this->viewData]);							
+			return view('entries.delete', ['entry' => $entry, 'data' => $this->getViewData()]);							
         }           
         else 
 		{
@@ -309,15 +340,12 @@ class EntryController extends Controller
 		$entries = Entry::select()->whereRaw('1 = 1')
 			->where('user_id', '=', Auth::id())
 			->where('is_template_flag', '=', 0)
-//			->where(function ($query) use ($search) {
-//				return $query
-//					->where('title', 'like', '%' . $search . '%')
-//					->orWhere('description', 'like', '%' . $search . '%')
-//					->orWhere('description_language1', 'like', '%' . $search . '%')
-//			;})
-			->where('title', 'like', '%' . $search . '%')
-			->orWhere('description', 'like', '%' . $search . '%')
-			->orWhere('description_language1', 'like', '%' . $search . '%')
+			->where(function ($query) use ($search) {
+				return $query
+					->where('title', 'like', '%' . $search . '%')
+					->orWhere('description', 'like', '%' . $search . '%')
+					->orWhere('description_language1', 'like', '%' . $search . '%')
+			;})
 			->orderBy('title')
 			->limit(25)
 			->get();
@@ -399,7 +427,7 @@ class EntryController extends Controller
 			if ($style)
 				$body = BODYSTYLE . $body . ENDBODYSTYLE;
 				
-			$text = nl2br(str_replace("[[body]]", $body, trim($layout))) . '<br/>';
+			$text = nl2br(str_replace(BODY_PLACEHODER, $body, trim($layout))) . '<br/>';
 		}
 		else
 		{
