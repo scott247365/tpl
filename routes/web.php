@@ -24,7 +24,7 @@ Route::get('/timer', 'EntryController@timer');
 
 // crypt / encrypt
 Route::get('/hash', 'EntryController@hash')->middleware('auth');
-Route::get('/hasher', 'EntryController@hash')->middleware('auth');
+Route::post('/hasher', 'EntryController@hasher')->middleware('auth');
 
 Route::group(['prefix' => 'faqs'], function () {
 	Route::get('/', 'FaqsController@index')->middleware('auth');
